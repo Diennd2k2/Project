@@ -16,8 +16,9 @@ namespace Project.Areas.Admin.Controllers
 
         public LoginController(NGANHANGContext DB) => this.DB = DB;
 
-        public IActionResult Index()
+        public IActionResult Index(string returnUrl)
         {
+            ViewData["returnUrl"] = returnUrl;
             return View();
         }
 
@@ -31,13 +32,13 @@ namespace Project.Areas.Admin.Controllers
             }
             else
             {
-                var Acount = DB.Taikhoan.Where(x => x.Sdt == int.Parse(phone) && x.Makhau == password);
+                var Acount = DB.Taikhoan.FirstOrDefault(x => x.Sdt == int.Parse(phone) && x.Makhau == password);
                 if(Acount != null)
                 {
-                    var identity = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, phone) }, "Authen");
+                    var identity = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, Acount.Email) }, "SecuritySchema");
                     var principal = new ClaimsPrincipal(identity);
-                    var login = HttpContext.SignInAsync("Bkap2022", principal);
-                    return Redirect("/Admin/Home/Index");
+                    HttpContext.SignInAsync("SecuritySchema", principal);
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {            
@@ -45,6 +46,12 @@ namespace Project.Areas.Admin.Controllers
                     return View();         
                 }
             }
+        }
+        public IActionResult Logout()
+        {
+            var login = HttpContext.SignOutAsync("SecuritySchema");
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }

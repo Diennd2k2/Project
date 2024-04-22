@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Options;
 
 namespace Project
 {
@@ -27,39 +28,40 @@ namespace Project
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddDistributedMemoryCache();
+            services.AddAuthentication("SecuritySchema").AddCookie("SecuritySchema", ops =>
+            {
+                ops.Cookie = new CookieBuilder
+                {
+                    HttpOnly = true,
+                    Name = "Security.Cookie",
+                    Path = "/",
+                    SameSite =SameSiteMode.Lax,
+                    SecurePolicy = CookieSecurePolicy.SameAsRequest
+                };
+                ops.LoginPath = new PathString("/Admin/Login/Index");
+                ops.ReturnUrlParameter = "RequestPath";
+                ops.SlidingExpiration = true;
+            });
             services.Configure<CookiePolicyOptions>(options =>
             {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
+                //options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddAuthentication("Authen").AddCookie("Authen", options => {
-                //options.AccessDeniedPath =new String("/Admin/Account/Management");
-                options.Cookie = new CookieBuilder
-                {
-                    HttpOnly = true,
-                    Name = "Authen.security.cookie",
-                    Path = "/",
-                    SameSite = SameSiteMode.Lax,
-                    SecurePolicy = CookieSecurePolicy.SameAsRequest
-                };
-                options.LoginPath = "/Admin/Login";
-                options.ReturnUrlParameter = "UrlRedirect";
-                options.SlidingExpiration = true;
-            });
-
-            services.AddDistributedMemoryCache();
-            services.AddSession(option =>
+            services.Configure<CookiePolicyOptions>(options =>
             {
-                option.IdleTimeout = TimeSpan.FromHours(1);
-                option.Cookie.Name = ".doan.Session";
-                option.Cookie.HttpOnly = true;
+                options.MinimumSameSitePolicy = Microsoft.AspNetCore.Http.SameSiteMode.None;
             });
-            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
-
-
+            services.AddDistributedMemoryCache();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromHours(1);
+                options.Cookie.Name = "Session";
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddDbContext<NGANHANGContext>(options => options.UseSqlServer(Configuration.GetConnectionString("NGANHANG")));
         }
@@ -83,27 +85,38 @@ namespace Project
             app.UseAuthentication();
             app.UseSession();
 
+            //app.UseMvc(routes =>
+            //{
+            //    routes.MapRoute(
+            //        name: "default",
+            //        template: "{controller=Home}/{action=Index}/{id?}");
+            //});
+
+            //app.UseMvc(routes =>
+            //{
+            //    routes.MapRoute(
+            //      name: "areas",
+            //      template: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+            //    );
+            //});
+
+            //app.UseMvc(routes =>
+            //{
+            //    routes.MapRoute(
+            //      name: "Admin",
+            //      template: "{area:exists}/{controller=Login}/{action=Index}/{id?}"
+            //    );
+            //});
             app.UseMvc(routes =>
             {
+                routes.MapRoute(
+                name: "admin",
+                template: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+              );
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
-            });
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                  name: "areas",
-                  template: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
-                );
-            });
-
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                  name: "Admin",
-                  template: "{area:exists}/{controller=Login}/{action=Index}/{id?}"
-                );
             });
         }
     }

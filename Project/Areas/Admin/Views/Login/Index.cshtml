@@ -39,7 +39,7 @@
                         <img src="~/Admin/assets/images/logo-icon.png" alt="logo icon">
                     </div>
                     <div class="card-title text-uppercase text-center py-3">Sign In</div>
-                    <form method="post" action="~/Admin/Login/Index">
+                    <form method="post" asp-action="Index">
                         <div class="form-group">
                             <label for="exampleInputUsername" class="sr-only">Username</label>
                             <div class="position-relative has-icon-right">
@@ -52,7 +52,7 @@
                         <div class="form-group">
                             <label for="exampleInputPassword" class="sr-only">Password</label>
                             <div class="position-relative has-icon-right">
-                                <input type="password" id="exampleInputPassword" class="form-control input-shadow" placeholder="Enter Password">
+                                <input type="password" name="password" id="exampleInputPassword" class="form-control input-shadow" placeholder="Enter Password">
                                 <div class="form-control-position">
                                     <i class="icon-lock"></i>
                                 </div>
