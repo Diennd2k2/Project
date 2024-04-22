@@ -1,0 +1,96 @@
+﻿@model Project.Models.Khachhang
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="row mt-3">
+    <div class="col-md-2"></div>
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-body">
+                <div class="card-title">Thêm mới nhân viên</div>
+                <hr>
+                <form method="post" action="~/Admin/KhachHang/Edit" enctype="multipart/form-data">
+                    <div class="row">
+                        <input type="hidden" name="Id" value="@Html.DisplayFor(model => model.Id)" class="form-control" id="input-1">
+                        <div class="form-group col-md-12">
+                            <label for="input-1">Tên nhân viên <span style="color:red">(*)</span></label>
+                            <input type="text" name="Ten" class="form-control" id="input-1" value="@Html.DisplayFor(model => model.Ten)" placeholder="Tên nhân viên">
+                            <b class="text-danger">@ViewBag.Ten</b>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="input-2">Số điện thoại <span style="color:red">(*)</span></label>
+                            <input type="number" name="Sdt" class="form-control" value="@Html.DisplayFor(model => model.Sdt)" id="input-2" placeholder="Số điện thoại">
+                            <b class="text-danger">@ViewBag.Sdt</b>
+                            <b class="text-danger">@ViewBag.Sdtt</b>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="input-2">Ngày sinh <span style="color:red">(*)</span></label>
+                            <input type="date" name="Ngaysinh" class="form-control" id="input-2" value="@ViewBag.ngaysinhEDIT" placeholder="Ngày sinh">
+                            <b class="text-danger">@ViewBag.Ngaysinh</b>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label for="input-3">Email <span style="color:red">(*)</span></label>
+                            <input type="text" name="Email" class="form-control" value="@Html.DisplayFor(model => model.Email)" id="input-3" placeholder="Email">
+                            <b class="text-danger">@ViewBag.Email</b>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="input-2">Số căn cước công dân/chứng minh <span style="color:red">(*)</span></label>
+                            <input type="number" name="Socmtnd" class="form-control" id="input-2" value="@Html.DisplayFor(model => model.Socmtnd)" placeholder="Số căn cước công dân/chứng minh">
+                            <b class="text-danger">@ViewBag.Socmtnd</b>
+                            <b class="text-danger">@ViewBag.Socmtndd</b>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label for="input-2">Ngày cấp <span style="color:red">(*)</span></label>
+                            <input type="date" name="Ngaycapcm" class="form-control" id="input-2" value="@ViewBag.ngaycapEDIT" placeholder="Ngày cấp">
+                            <b class="text-danger">@ViewBag.Ngaycapcm</b>
+                        </div>
+                        <div class="form-group col-md-8">
+                            <label for="input-2">Nơi cấp <span style="color:red">(*)</span></label>
+                            <input type="text" name="Noicapcm" class="form-control" id="input-2" value="@Html.DisplayFor(model => model.Noicapcm)" placeholder="Nơi cấp">
+                            <b class="text-danger">@ViewBag.Noicapcm</b>
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <label for="input-2">Ảnh đại diện</label>
+                            <input type="file" name="Files" class="form-control" id="input-2" placeholder="Enter Your Email Address">
+                        </div>
+                        <div class="form-group col-md-8">
+                           
+                            <label for="input-3">Địa chỉ <span style="color:red">(*)</span></label>
+                            <input type="text" name="Diachi" class="form-control" value="@Html.DisplayFor(model => model.Diachi)" id="input-3" placeholder="Địa chỉ">
+                            <b class="text-danger">@ViewBag.Diachi</b>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <input name="Avatar" value="@Html.DisplayFor(model => model.Avatar)" />
+                            <img src="~/images/@Model.Avatar" class="rounded-circle" style="width: 70px; height:70px ; margin-top:12px ; margin-left: 80px" alt="...">
+                        </div>
+                        <div class="col-md-3">
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" value="1" id="customRadioInline1" name="Trangthai" class="custom-control-input" @(Model.Trangthai == 1 ? "checked" : "")>
+                                <label class="custom-control-label" for="customRadioInline1">Hoạt động</label>
+                            </div>
+                        </div>
+                        <div class="col.md-3">
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" value="2" id="customRadioInline2" name="Trangthai" class="custom-control-input" @(Model.Trangthai == 2 ? "checked" : "")>
+                                <label class="custom-control-label" for="customRadioInline2">Không hoạt động</label>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="input-2">Số dư tài khoản<span style="color:red">(*)</span></label>
+                            <input type="number" name="Sodutk" class="form-control" value="@Html.DisplayFor(model => model.Sodutk)" id="input-2" value="0" disabled>
+                        </div>
+                        <div class="form-group col-md-12 mt-4">
+                            <button type="submit" class="btn btn-light px-5"><i class="icon-lock"></i>Thêm mới</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-2"></div>
+</div><!--End Row-->

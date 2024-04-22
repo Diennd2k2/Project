@@ -1,0 +1,120 @@
+﻿@model IEnumerable<Project.Models.Chinhanh>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="card mt-3">
+    <div class="card-content">
+        <div class="row row-group m-0">
+            <div class="col-12 col-lg-12 col-xl-12 border-light">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <a class="ml-4 btn btn-success" href="~/Admin/NHANVIEN/Create">Thêm mới</a>
+                        </div>
+                        <div class="col-md-8">
+                            <form class="search-bar" method="get" action="~/Admin/NHANVIEN/Index">
+                                <input type="text" name="search" class="form-control" placeholder="Enter keywords">
+                                <button href="javascript:void();"><i class="icon-magnifier" style="position: absolute;margin-top: -40px;margin-left: 496px;color: #ffffff;"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>    
+        
+@if (TempData["OK"] != null)
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>@TempData["OK"]</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+<div class="row mt-3">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Danh sách chi nhanh</h5>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">STT</th>
+                                <th scope="col">Tenchinhanh</th>
+                                <th scope="col">Diachi</th>
+                                <th scope="col">Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <th scope="row">1</th>
+                                    <td>@item.Tenchinhanh</td>
+                                    <td>@item.Diachi</td>
+                                    <td>
+                                        <a href="~/Admin/ChiNhanh/Index?id=@item.Id">
+                                            <i class="ti-pencil-alt"></i>
+                                        </a>
+                                        <a class="ml-4" href="~/Admin/ChiNhanh/Delete?id=@item.Id">
+                                            <i class="ti-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                @if (ViewBag.edit.Id == 0)
+                {
+                    <div class="card-title">Thêm mới chi nhánh</div>
+                }
+                else
+                {
+                    <div class="card-title">Câp nhật chi nhánh</div>
+                }
+
+                <hr>
+                <form method="post" action="~/Admin/ChiNhanh/Create">
+                    <div class="form-group">
+                        <input type="hidden" name="id" value="@ViewBag.edit.Id" class="form-control" id="input-1" />
+                        <label for="input-1">Tên chi nhánh</label>
+                        <input type="text" name="Ten" value="@ViewBag.edit.Tenchinhanh" class="form-control" id="input-2" placeholder="Tên chi nhánh">
+                        <b class="text-danger">@ViewBag.Ten</b>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-2">Địa chỉ</label>
+                        <input type="text" name="Diachi" value="@ViewBag.edit.Diachi" class="form-control" id="input-3" placeholder="Địa chỉ">
+                    </div>
+
+                    <div class="form-group">
+                        @if (ViewBag.edit.Id == 0)
+                        {
+                            <button type="submit" class="btn btn-light px-5"><i class="icon-lock"></i> Thêm mới</button>
+                        }
+                        else
+                        {
+                            <button type="submit" class="btn btn-light px-5"><i class="icon-lock"></i> Cập nhật</button>
+                            <a class="ml-4 btn btn-success" href="~/Admin/ChiNhanh/Index">Huỷ</a>
+                        }
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div><!--End Row-->

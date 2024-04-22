@@ -1,0 +1,28 @@
+﻿@model Project.Models.Giaodich
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="row mt-3">
+    <div class="col-md-2"></div>
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-body">
+                <div class="card-title">Thêm mới khách hàng</div>
+                <hr>
+                <form method="post" action="~/Admin/KhachHang/createGD" enctype="multipart/form-data">
+                    <div class="row">
+                        
+
+                        <div class="form-group col-md-12 mt-4">
+                            <button type="submit" class="btn btn-light px-5"><i class="icon-lock"></i>Thêm mới</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-2"></div>
+</div><!--End Row-->
